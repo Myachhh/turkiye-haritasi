@@ -88,7 +88,8 @@ function createMap() {
     const svg = document.getElementById('turkey-map');
     
     cities.forEach(city => {
-        const path = document.createElementNS('[w3.org](http://www.w3.org/2000/svg)', 'path');
+        // Namespace hatasını burada düzelttik
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', city.path);
         path.setAttribute('class', 'city');
         path.setAttribute('id', `city-${city.id}`);
@@ -153,11 +154,9 @@ function handleMouseMove(e) {
 
 // Click - il sayfasına git
 function handleClick(e) {
-    const cityId = e.target.getAttribute('data-id');
     const cityName = e.target.getAttribute('data-name');
     
     // İl sayfasına yönlendir
-    // Türkçe karakterleri URL-friendly yap
     const urlName = cityName
         .toLowerCase()
         .replace(/ı/g, 'i')
