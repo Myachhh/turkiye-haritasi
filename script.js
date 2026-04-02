@@ -1,33 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Haritadaki tüm illeri (path) seçiyoruz
     const paths = document.querySelectorAll('#turkey-map path');
     const tooltip = document.getElementById('tooltip');
 
     paths.forEach(path => {
-        // Fare ilin üzerine geldiğinde
         path.addEventListener('mouseenter', (e) => {
-            // Diğer illeri soluklaştır, üzerine gelineni parlat
-            paths.forEach(p => p.style.opacity = "0.3");
+            paths.forEach(p => p.style.opacity = "0.2"); // Diğerlerini soğut
             e.target.style.opacity = "1";
             
-            // Tooltip içine ilin adını yazdır
-            // (Not: SVG içinde 'title' etiketi yoksa 'İl Detayı' yazar)
-            const cityName = e.target.getAttribute('title') || "İl Detayı";
-            tooltip.textContent = cityName;
+            // Tooltip içeriği (SVG'de isim yoksa id'yi basar)
+            tooltip.textContent = e.target.getAttribute('title') || e.target.id || "İl Detayı";
             tooltip.classList.add('visible');
         });
 
-        // Fare ilin üzerinden çekildiğinde
         path.addEventListener('mouseleave', () => {
-            // Her şeyi eski parlaklığına döndür
             paths.forEach(p => p.style.opacity = "1");
             tooltip.classList.remove('visible');
         });
 
-        // Fare hareket ettikçe kutucuk fareyi takip etsin
         path.addEventListener('mousemove', (e) => {
-            tooltip.style.left = e.pageX + 15 + 'px';
-            tooltip.style.top = e.pageY - 15 + 'px';
+            // Tooltip'in fareyi tam takip etmesi için hassas ayar
+            tooltip.style.left = e.clientX + 20 + 'px';
+            tooltip.style.top = e.clientY + 20 + 'px';
+        });
+
+        path.addEventListener('click', (e) => {
+            // Tıklayınca ilgili ile gitme fonksiyonu
+            const cityId = e.target.id;
+            window.location.href = `cities/${cityId}.html`;
         });
     });
 });
